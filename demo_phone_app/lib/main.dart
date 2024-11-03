@@ -93,12 +93,12 @@ class _DemoState extends State<Demo> {
 
                 var request = await http.MultipartRequest(
                   "POST",
-                  Uri.parse("http://192.168.1.2/qrcode/attendStudent"),
+                  Uri.parse("http://192.168.1.2:8000/recognizeAudio"),
                 );
-                request.files.add(http.MultipartFile(
-                    "image", image.readAsBytes().asStream(), image.lengthSync(),
-                    filename: "qr"));
+                request.files.add(
+                    await http.MultipartFile.fromPath("file", picture.path));
                 var response = await request.send();
+                print(response);
               },
               child: const Icon(Icons.camera),
             ))
