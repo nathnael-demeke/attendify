@@ -17,23 +17,53 @@ const AttendanceModel = model('attendances', AttendanceSchema);
 class Attendace {
     static async calculateAbsentStudents(schoolData, schoolID) {
         const students = await query(
-            'select * from students where school_id = ?',
+            'select id from students where school_id = ?',
             schoolID
         );
-        const fullAttendance = { Absent: [], Present: [] };
-        const presentStudents = schoolData.Present;
-
+        const allStudentsID = []
+        var presentStudents = []
+        var abesntStudentsData = []
+        schoolData.Present.forEach((presentStudent) => {
+            presentStudents.push(presentStudent.id)
+        })
         students.forEach((student) => {
-            const studentID = student.id;
-            if (presentStudents.includes(studentID)) {
-                fullAttendance.Present.push(student);
-            } else {
-                fullAttendance.Absent.push(student);
+            allStudentsID.push(student.id)
+        })
+        
+        for (var index in allStudentsID) {
+            var id = allStudentsID[index]
+            if (!presentStudents.includes(id)) {
+                var studentData = await Student.getStudentData(`s_${id}`)
+                abesntStudentsData.push(studentData)
             }
-        });
+        }
+    
+        const fullAttendance = { Absent: abesntStudentsData, Present: schoolData.Present };
+        
+        // students.forEach((student) => {
+        //     const studentID = student.id;
+        //     if (presentStudents.includes(studentID)) {
+        //         fullAttendance.Present.push(student);
+        //     } else {
+        //         fullAttendance.Absent.push(student);
+        //     }
+        // });
         return fullAttendance;
     }
+    static async getAttendanceByDate(date,schoolID) {
+        const AllAttendance = await AttendanceModel.findOne({ date: date });
 
+        if (AllAttendance) {
+            const schoolData = new Map(AllAttendance.schools).get(schoolID);
+            const attendance = await this.calculateAbsentStudents(
+                schoolData,
+                schoolID
+            );
+            return attendance;
+        } else {
+            return false;
+        }
+    }
     static async getPresentStudents(schoolID) {
         const today = `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`;
         const AllAttendance = await AttendanceModel.findOne({ date: today });
@@ -58,7 +88,7 @@ class Attendace {
             );
             return attendance;
         } else {
-            return { Status: '404', Message: 'Attendance Not Found' };
+            return false;
         }
     }
 
@@ -71,9 +101,12 @@ class Attendace {
             const schoolID = String(student.school_id);
             const previousAttendance = new Map(attendace['schools']);
             const schoolAttendance = previousAttendance.get(schoolID);
-
-            if (!schoolAttendance['Present'].includes(student.id)) {
-                schoolAttendance['Present'].push(student.id);
+            var presentStudents = []
+            schoolAttendance.Present.forEach((student) => {
+                presentStudents.push(student.id)
+            })
+            if (!presentStudents.includes(student.id)) {
+                schoolAttendance['Present'].push(student);
             }
 
             const result = await AttendanceModel.findOneAndUpdate(
@@ -87,7 +120,7 @@ class Attendace {
                 schools: {
                     1: {
                         Absent: [],
-                        Present: [student.id],
+                        Present: [student],
                         Late: [],
                     },
                 },
