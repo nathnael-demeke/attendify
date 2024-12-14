@@ -1,7 +1,18 @@
 import express from "express"
 import Report from '../models/Report.js'
+import Attendace from "../models/attendance.js";
+import School from "../models/school.js";
 const router = express()
 
+async function getSchoolData(schoolID) {
+    var schoolData = {}
+    var allStudents = await School.getAllStudentsCount(schoolID)
+    var presentStudents = await Attendace.getPresentStudents(schoolID)
+    schoolData["present_students"] = presentStudents.length
+    schoolData["total_students"] = allStudents
+    schoolData["absent_students"] = allStudents - presentStudents.length
+    return schoolData
+}
 function getThisWeekDays() {
     const today = `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`;
     var daysBehind = (new Date().getDay()) - 1
@@ -17,10 +28,14 @@ function getThisWeekDays() {
     return dates
 }
 router.get("/today", async (req,res) => {    
-    var attendaceReport = await Report.getTodayReport(req.query.schoolID)
-    res.json(attendaceReport)
+    var schoolID = req.query.schoolID
+    var attendaceReport = await Report.getTodayReport(schoolID)
+    var schoolInfo = await getSchoolData(schoolID)
+    //merging the two dicts
+    res.json(Object.assign({}, attendaceReport, schoolInfo))
 })
 router.get("/thisWeek", async (req,res) => {
+       console.log("request come")
        var schoolID = req.query.schoolID
        var thisWeekDays = getThisWeekDays()
        var response = {}
@@ -29,7 +44,8 @@ router.get("/thisWeek", async (req,res) => {
         var reportByDate = await Report.getReportByDate(date,schoolID)
         response[date] = reportByDate
        }
-       res.json(response)
+       var schoolInfo = await getSchoolData(schoolID)
+       res.json(Object.assign({},schoolInfo,response))
 })
 
 export default router

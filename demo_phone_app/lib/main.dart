@@ -25,7 +25,6 @@ class Demo extends StatefulWidget {
 class _DemoState extends State<Demo> {
   late CameraController _cameraController;
   bool turnFlashLightOn = false;
-  String host = "192.168.1.2";
   @override
   void initState() {
     // TODO: implement initState
@@ -63,8 +62,9 @@ class _DemoState extends State<Demo> {
               onTap: () async {
                 try {
                   var response = await http.get(
-                      Uri.parse("http://192.168.1.2/attendance?schoolID=1"));
+                      Uri.parse("http://192.168.1.2/report/today?schoolID=1"));
                   Map attendanceData = json.decode(response.body);
+                  print(attendanceData["9"]);
                   Navigator.push(context, MaterialPageRoute(builder: (build) {
                     return AttendancePage(attendanceData: attendanceData);
                   }));
@@ -93,10 +93,10 @@ class _DemoState extends State<Demo> {
 
                 var request = await http.MultipartRequest(
                   "POST",
-                  Uri.parse("http://192.168.1.2:8000/recognizeAudio"),
+                  Uri.parse("http://192.168.1.2/qrcode/attendStudent"),
                 );
                 request.files.add(
-                    await http.MultipartFile.fromPath("file", picture.path));
+                    await http.MultipartFile.fromPath("image", picture.path));
                 var response = await request.send();
                 print(response);
               },

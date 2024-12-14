@@ -1,11 +1,5 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:open_file/open_file.dart';
-import 'package:sphone/screens/StudentProfilePage.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:sphone/screens/Section.dart';
 
 class DropDownForTemplates extends StatefulWidget {
   final List children;
@@ -13,11 +7,13 @@ class DropDownForTemplates extends StatefulWidget {
   final BuildContext context;
   final Color buttonColor;
   final Color titleColor;
+  final String grade;
   DropDownForTemplates({
     super.key,
     required this.children,
     required this.title,
     required this.context,
+    required this.grade,
     required this.buttonColor,
     required this.titleColor,
   });
@@ -27,55 +23,24 @@ class DropDownForTemplates extends StatefulWidget {
 }
 
 class _DropDownForTemplatesState extends State<DropDownForTemplates> {
-  bool showChildren = false;
-  Column getChildren(
-      bool showChildren, List children, String title, BuildContext context) {
-    if (showChildren) {
+  bool showSections = false;
+  bool showStudents = false;
+  Section? currentlyDisplayedSection;
+  Column getSections(bool showSections, List children, String title,
+      BuildContext context, String grade) {
+    if (showSections) {
       return Column(
           children: children.map((child) {
-        return Center(
-            child: Padding(
-          padding: const EdgeInsets.all(9),
-          child: Container(
-            width: 500,
-            child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.amber)),
-                onPressed: () {},
-                child: ListTile(
-                  trailing: Container(
-                    width: 75,
-                    child: Row(children: [
-                      ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 27, 255, 34))),
-                        onPressed: () {
-                          String father_phone_number =
-                              child["father_phone_number"];
-                          launchUrlString("tel: //$father_phone_number");
-                          showDialog(
-                              context: context,
-                              builder: (build) {
-                                return AlertDialog();
-                              });
-                        },
-                        child: Icon(
-                          Icons.phone,
-                          color: Colors.white,
-                        ),
-                      )
-                    ]),
-                  ),
-                  onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (build) {
-                      return StudentProfilePage(data: child);
-                    }));
-                  },
-                  title: Text("${child["first_name"]} ${child["father_name"]}"),
-                )),
+        Section section = Section(
+            grade: grade,
+            section: child["section"],
+            students: child["students"],
+            showStudents: false);
+        return Container(
+          child: GestureDetector(
+            child: section,
           ),
-        ));
+        );
       }).toList());
     } else {
       return Column();
@@ -91,15 +56,18 @@ class _DropDownForTemplatesState extends State<DropDownForTemplates> {
         Container(
           padding: EdgeInsets.all(10),
           width: screenWidth - 10,
-          child: ElevatedButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(widget.buttonColor)),
-            onPressed: () {
-              setState(() {
-                showChildren = !showChildren;
-              });
-            },
+          child: Container(
+            height: 65,
+            decoration: BoxDecoration(
+                color: widget.buttonColor,
+                borderRadius: BorderRadius.circular(9),
+                border: Border.all(color: Colors.black, width: 1.1)),
             child: ListTile(
+              onTap: () {
+                setState(() {
+                  showSections = !showSections;
+                });
+              },
               title: Text(
                 widget.title,
                 style: TextStyle(color: widget.titleColor),
@@ -107,7 +75,8 @@ class _DropDownForTemplatesState extends State<DropDownForTemplates> {
             ),
           ),
         ),
-        getChildren(showChildren, widget.children, widget.title, context),
+        getSections(
+            showSections, widget.children, widget.title, context, widget.grade),
       ],
     );
   }
