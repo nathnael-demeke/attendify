@@ -1,4 +1,4 @@
-import { query } from '../config/mysql-connection.js';
+import { query,connection } from '../config/mysql-connection.js';
 
 class Student {
     static decodeStudentID(ID) {

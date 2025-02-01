@@ -4,15 +4,18 @@ import APIRouter from './routes/api.js';
 import Attendance from './models/attendance.js';
 import bodyParser from 'body-parser';
 import reportRouter from "./routes/reportRouter.js"
+import studentRouter from "./routes/studentRouter.js"
+
+
 const app = express();
 const PORT = process.env.PORT;
 
 app.use(bodyParser())
 app.use(urlencoded({ extended: true }));
-
 app.use('/qrcode', QRCodeRouter);
 app.use('/api', APIRouter);
 app.use('/report', reportRouter)
+app.use('/student', studentRouter)
 app.get('/attendance', async (req, res) => {
     const schoolID = req.query.schoolID;
     const response = await Attendance.getTodayAttendance(schoolID);

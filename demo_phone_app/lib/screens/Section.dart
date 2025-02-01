@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:sphone/screens/StudentProfilePage.dart';
 
 class Section extends StatefulWidget {
@@ -30,11 +31,23 @@ class _SectionState extends State<Section> {
           padding: const EdgeInsets.only(bottom: 10, left: 30, right: 45),
           child: Container(
             decoration: const BoxDecoration(color: Colors.white),
-            child: ListTile(
-              onTap: () {
-                print("mynameis");
-              },
-              title: Text("${student["first_name"]} ${student["father_name"]}"),
+            child: Slidable(
+              startActionPane: ActionPane(motion: ScrollMotion(), children: [
+                SlidableAction(
+                  onPressed: (context) {},
+                  flex: 1,
+                  backgroundColor: Colors.red,
+                  icon: Icons.remove_circle,
+                  spacing: 1,
+                )
+              ]),
+              child: ListTile(
+                onTap: () {
+                  print("mynameis");
+                },
+                title:
+                    Text("${student["first_name"]} ${student["father_name"]}"),
+              ),
             ),
           ),
         );

@@ -61,8 +61,8 @@ class _DemoState extends State<Demo> {
             child: GestureDetector(
               onTap: () async {
                 try {
-                  var response = await http.get(
-                      Uri.parse("http://192.168.1.2/report/today?schoolID=1"));
+                  var response = await http.get(Uri.parse(
+                      "http://192.168.170.200/report/today?schoolID=1"));
                   Map attendanceData = json.decode(response.body);
                   print(attendanceData["9"]);
                   Navigator.push(context, MaterialPageRoute(builder: (build) {
@@ -93,7 +93,7 @@ class _DemoState extends State<Demo> {
 
                 var request = await http.MultipartRequest(
                   "POST",
-                  Uri.parse("http://192.168.1.2/qrcode/attendStudent"),
+                  Uri.parse("http://192.168.170.200/qrcode/attendStudent"),
                 );
                 request.files.add(
                     await http.MultipartFile.fromPath("image", picture.path));

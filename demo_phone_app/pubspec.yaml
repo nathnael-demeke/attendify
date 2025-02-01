@@ -39,7 +39,6 @@ dependencies:
   curved_labeled_navigation_bar: ^2.0.2
   camera: ^0.10.5
   provider: ^5.0.0
-  flutter_slidable: ^0.6.0
   path_provider: ^2.0.1
   permission_handler: ^10.3.0
   open_file: ^3.3.2
@@ -47,6 +46,7 @@ dependencies:
   google_nav_bar: ^5.0.6
   hive: ^2.2.3
   http: ^1.2.2
+  flutter_slidable: ^3.1.2
   lottie: ^3.1.2
   url_launcher: ^6.3.0
   flutter_switch: ^0.3.2

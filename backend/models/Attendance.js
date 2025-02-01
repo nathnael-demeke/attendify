@@ -16,10 +16,7 @@ const AttendanceModel = model('attendances', AttendanceSchema);
 
 class Attendace {
     static async calculateAbsentStudents(schoolData, schoolID) {
-        const students = await query(
-            'select id from students where school_id = ?',
-            schoolID
-        );
+        const students = await query('select id from students where school_id = ?', schoolID);
         const allStudentsID = []
         var presentStudents = []
         var abesntStudentsData = []
@@ -29,7 +26,6 @@ class Attendace {
         students.forEach((student) => {
             allStudentsID.push(student.id)
         })
-        
         for (var index in allStudentsID) {
             var id = allStudentsID[index]
             if (!presentStudents.includes(id)) {
@@ -131,6 +127,29 @@ class Attendace {
 
         }
     }
+
+    static async assignLateStudents(students,schoolID) {
+        const today = `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`;
+        var attendace = await AttendanceModel.findOne({date: today})
+        var previousAttendance = new Map(attendace)
+        var schoolData = previousAttendance["schools"].get("1")
+        var lateStudentsID = students.map((student) => student.id)  
+        var absentStudents = schoolData["Absent"]
+        
+        //remove late students from the absent list
+        for (var index in absentStudents) {
+            var student = absentStudents[index]
+            if (lateStudentsID.includes(student.id)) {
+                absentStudents.splice(index,1)
+            }
+        }
+        schoolData["Late"] = students
+        schoolData["Absent"] = absentStudents
+        previousAttendance["schools"][schoolID] = schoolData
+        //This will update the list of late and absent students
+        await AttendanceModel.findOneAndUpdate({date: today}, {schools: previousAttendance}, {new: false})
+    }
+
 }
 
 export default Attendace;
