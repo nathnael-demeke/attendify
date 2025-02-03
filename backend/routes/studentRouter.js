@@ -14,7 +14,14 @@ router.get("/getInfo", async (req,res) => {
     studentInfoResult["isPresent"] = await Student.isStudentPresent(studentID,schoolID)
     res.json(studentInfoResult)
 })
-
+router.get("/search", async (req,res) => {
+    var keywords = (req.query.keyword).split()
+    var filters = req.query.filters 
+    var firstName = keywords[0]
+    var fatherName = keywords[1]
+    var result = await query('select * from students where first_name like "?%" and father_name like "?%"', [firstName, fatherName])
+    res.json(result)
+})
 router.post("/register", async (req,res) => {
     try {
         const form = new IncomingForm()
