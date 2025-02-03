@@ -8,10 +8,11 @@ import Logo from "@/components/logo/Logo";
 interface CoreNormalAppbarProps {
     backBtn?: boolean, 
     navdrawerOpener?: () => void, 
-    title?: React.ReactNode
+    title?: React.ReactNode,
+    hideSearchbar?: boolean
 }
 
-const CoreNormalAppbar: React.FC<CoreNormalAppbarProps> = ({ backBtn, navdrawerOpener, title }) => {
+const CoreNormalAppbar: React.FC<CoreNormalAppbarProps> = ({ backBtn, navdrawerOpener, title, hideSearchbar }) => {
 
     const [query, setQuery] = React.useState('');
 
@@ -26,11 +27,12 @@ const CoreNormalAppbar: React.FC<CoreNormalAppbarProps> = ({ backBtn, navdrawerO
             title={title ? title : <Logo />}
             navdrawerOpener={navdrawerOpener}
             searchbar={
+                !hideSearchbar ?
                 <SearchBar
                     value={query}
                     onChange={setQuery}
                     onSearch={handleSearch}
-                />
+                /> : null
             }
             rightButtons={
                 <>

@@ -29,6 +29,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
                     icon="search" 
                     className={styles.search_button} 
                     disabled={disabled} 
+                    type='submit'
                     onClick={onSearch} 
                 />
             )}
