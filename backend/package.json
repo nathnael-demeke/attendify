@@ -23,6 +23,7 @@
         "jsqr": "^1.4.0",
         "mongoose": "^8.9.0",
         "mysql2": "^3.11.5",
+        "qrcode": "^1.5.4",
         "qrcode-reader": "^1.0.4",
         "zxing": "^0.1.2"
     }
