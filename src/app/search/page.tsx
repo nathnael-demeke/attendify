@@ -2,6 +2,9 @@
 import * as React from "react";
 import styles from "./page.module.css";
 import CoreNormalAppbar from "@/widgets/UI/NormalAppbar";
+import CoreNavDrawer from "@/widgets/UI/NavDrawer";
+import { useNavDrawer } from "@/context/NavDrawerContext";
+import useScreenSize from "@/hooks/useScreenSize";
 import SearchBar from "@/components/inputs/searchbar/Searchbar";
 import Chips from "@/components/chips/Chips";
 import List, { ListItem } from "@/components/lists/Lists";
@@ -53,10 +56,15 @@ export default function Search() {
         "Branding"
     ]
 
-    return(
-        <>
-            <CoreNormalAppbar title="Search" backBtn />
-            <Container hasNavDrawer={false} hasNavbar={false}>
+	const { isNavDrawerOpen, toggleNavDrawer } = useNavDrawer();
+	
+	const isLargeScreen: boolean = useScreenSize(1024);
+
+	return (
+	  	<>
+			{<CoreNormalAppbar navdrawerOpener={toggleNavDrawer} hideSearchbar title="Search" backBtn/>}
+			{isLargeScreen && <CoreNavDrawer  isOpen={isNavDrawerOpen} active={1} />}
+            <Container title="Search" hasNavbar={false} navDrawerOpen={isNavDrawerOpen}>
                 <div className={styles.searchbar_container}>
                     <div className={styles.searchbar_wrapper}>
                         <SearchBar
@@ -82,7 +90,7 @@ export default function Search() {
                     <List heading="History">
                         {
                             searchHistory.map((history, i) => (
-                                <ListItem icon="arrow_outward" href={`/search?q=${history}`} key={i} heading={history}/>
+                                <ListItem icon="arrow_outward" href={`/search/r?q=${history}`} key={i} heading={history}/>
                             ))
                         }
                     </List> : ""
