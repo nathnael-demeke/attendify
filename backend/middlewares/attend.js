@@ -1,7 +1,7 @@
 import Jimp from 'jimp';
 import { readFileSync } from 'fs';
 import { IncomingForm } from 'formidable';
-import { QR } from '../models/qr.js';
+import QR  from '../models/qr.js';
 import Attendance from '../models/attendance.js';
 import Student from '../models/students.js';
 import { errorResponse } from '../helper/error-response.js';

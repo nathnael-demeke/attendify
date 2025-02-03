@@ -1,6 +1,20 @@
 import { query,connection } from '../config/mysql-connection.js';
-
+import Attendace from "./Attendance.js"
 class Student {
+    static async isStudentPresent(studentID,schoolID) {
+       const today = `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`;
+       var absentStudents = await Attendace.getAbsentStudents(schoolID)
+       var isPresent = true
+       for (var index in absentStudents) {
+          var student = absentStudents[index]
+          if (student.id == studentID) {
+            isPresent = false
+            break
+          }
+       }    
+       return isPresent
+
+    }
     static decodeStudentID(ID) {
         return ID.replace('s_', '');
     }

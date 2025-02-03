@@ -1,6 +1,12 @@
 import QRCodeReader from 'qrcode-reader';
-
+import qrcode from 'qrcode';
 class QR {
+    static async generateQRCode(data,filename) {
+        var qrCodePath = `/QRCodes/${filename}.png`
+        var qrcodeFilePath = `../public${qrCodePath}`
+        var qrFile = await qrcode.toFile(qrcodeFilePath,data)
+        return qrCodePath
+    }
     static async getQrCodeData(imageBuffer) {
         var qrCodeReader = new QRCodeReader()        
         var code = await new Promise((resolve,reject) => {
@@ -17,4 +23,4 @@ class QR {
     }
 }
 
-export { QR };
+export default QR ;

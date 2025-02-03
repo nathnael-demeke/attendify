@@ -2,6 +2,7 @@ import { connect, Schema, model } from 'mongoose';
 import { query } from '../config/mysql-connection.js';
 import Student from './students.js';
 import { configDotenv } from 'dotenv'
+import { exit } from 'process';
 configDotenv()
 const MONGO_DB_URL = process.env.MONGODB_URL;
 
@@ -11,8 +12,18 @@ const AttendanceSchema = Schema({
     date: String,
     schools: Map,
 });
+var AttendanceModel = null
+try {
+    AttendanceModel = model('attendances', AttendanceSchema);
+}
+catch (error) {
+    if (error.name == "OverwriteModelError") {}
+    else {
+        exit(0)
+        console.log(error)
+    }
 
-const AttendanceModel = model('attendances', AttendanceSchema);
+}
 
 class Attendace {
     static async calculateAbsentStudents(schoolData, schoolID) {
@@ -67,6 +78,17 @@ class Attendace {
         if (AllAttendance) {
             const schoolData = new Map(AllAttendance.schools).get(schoolID);
             return schoolData['Present'];
+        } else {
+            return [];
+        }
+    }
+    static async getAbsentStudents(schoolID) {
+        const today = `${new Date().getFullYear()}/${new Date().getMonth()}/${new Date().getDate()}`;
+        const AllAttendance = await AttendanceModel.findOne({ date: today });
+
+        if (AllAttendance) {
+            const schoolData = new Map(AllAttendance.schools).get(schoolID);
+            return schoolData['Absent'];
         } else {
             return [];
         }

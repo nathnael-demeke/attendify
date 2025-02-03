@@ -3,7 +3,17 @@ import { IncomingForm } from 'formidable';
 import fs from 'fs';
 import path from 'path';
 import express from 'express';
+import Student from '../models/students.js';
+import QRCode from "../models/qr.js"
 const router = express()
+
+router.get("/getInfo", async (req,res) => {
+    const studentID = req.query.studentID
+    const schoolID = req.query.schoolID
+    var studentInfoResult = (await query("select * from students where id = ?", [studentID]) ) [0]
+    studentInfoResult["isPresent"] = await Student.isStudentPresent(studentID,schoolID)
+    res.json(studentInfoResult)
+})
 
 router.post("/register", async (req,res) => {
     try {
@@ -29,6 +39,10 @@ router.post("/register", async (req,res) => {
                 if (err) console.log(err)
             })
         await query("insert into students (first_name,father_name,grand_father_name, email,username,password,mother_phone_number,father_phone_number,gender,photo,birthday) values (?,?,?,?,?,?,?,?,?,?,?)", [firstName,fatherName,grandFatherName,email,username,password,motherphoneNumber,fatherPhoneNumber,gender,newFilePath,new Date(birthDay)])
+        var newStudentID = await query("select id from students where photo = ?", newFilePath)
+        var qrcodeFileName = `${firstName}-${fatherName}-${time}`
+        var qrCodePath = await QRCode.generateQRCode(newStudentID,qrcodeFileName)
+        await query("update students set qrcode_path = ? where photo = ?", [qrCodePath,newFilePath])
         res.json({'Message': `Student ${firstName} ${fatherName} has been registered Succesfully`})
         })
     }

@@ -14,6 +14,7 @@
     "attendify": "file:",
     "mongoose": "^8.7.3",
     "next": "14.2.5",
+    "qrcode": "^1.5.4",
     "react": "^18",
     "react-dom": "^18",
     "react-google-charts": "^4.0.1",
