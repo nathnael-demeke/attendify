@@ -17,7 +17,7 @@ const cardData = [
 	{ heading: "Reported Students", href: "/reports", buttonText: "See reported", details: "Review the records of all students who were absent today, providing an up-to-date overview of today's attendance." },
 	{ heading: "Import Students", href: "#", buttonText: "Import", details: "Import student data seamlessly from another database, allowing you to integrate and consolidate student information into the current system." },
 	{ heading: "Download Data", href: "#", buttonText: "Download", details: "Download the complete student data, enabling you to store or analyze the information offline as needed." },
-  	{ heading: "School Data of Students", href: "#", buttonText: "Show Data", details: "Download the entire school's data, including comprehensive information from the main company, to ensure you have a complete and consolidated record for all entities." }
+  	{ heading: "School Data", href: "#", buttonText: "Download", details: "Download the entire school's data, including comprehensive information from the main company, to ensure you have a complete and consolidated record for all entities." }
 ];
 
 export default function Students() {

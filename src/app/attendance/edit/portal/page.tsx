@@ -24,36 +24,36 @@ export default function EditAttendancePortal() {
                 <Accordion variant="filled" title="Select Grade and Section">
                     <AccordionItem label="Grade 9">
                         <List>
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section A" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section B" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section C" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section D" />
+                            <ListItem href="/attendance/edit?grade=9&section=A" heading="section A" />
+                            <ListItem href="/attendance/edit?grade=9&section=B" heading="section B" />
+                            <ListItem href="/attendance/edit?grade=9&section=C" heading="section C" />
+                            <ListItem href="/attendance/edit?grade=9&section=D" heading="section D" />
                         </List>
                     </AccordionItem>
                     <AccordionItem label="Grade 10">
                         <List>
                             <ListItem href="/attendance/edit?grade=10&section=A" heading="section A" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section B" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section C" />
-                            <ListItem href="/attendance/edit?grade=10&section=A" heading="section D" />
+                            <ListItem href="/attendance/edit?grade=10&section=B" heading="section B" />
+                            <ListItem href="/attendance/edit?grade=10&section=C" heading="section C" />
+                            <ListItem href="/attendance/edit?grade=10&section=D" heading="section D" />
                         </List>
                     </AccordionItem>
                     <AccordionItem label="Grade 11">
                         <Accordion variant="filled">
                             <AccordionItem label="Natural Science">
                                 <List>
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Natural Science" heading="section A" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Natural Science" heading="section B" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Natural Science" heading="section C" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Natural Science" heading="section D" />
+                                    <ListItem href="/attendance/edit?grade=11&section=A&&stream=N" heading="section A" />
+                                    <ListItem href="/attendance/edit?grade=11&section=B&&stream=N" heading="section B" />
+                                    <ListItem href="/attendance/edit?grade=11&section=C&&stream=N" heading="section C" />
+                                    <ListItem href="/attendance/edit?grade=11&section=D&&stream=N" heading="section D" />
                                 </List>
                             </AccordionItem>
                             <AccordionItem label="Social Science">
                                 <List>
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Social Science" heading="section A" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Social Science" heading="section B" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Social Science" heading="section C" />
-                                    <ListItem href="/attendance/edit?grade=10&section=A&&stream=Social Science" heading="section D" />
+                                    <ListItem href="/attendance/edit?grade=11&section=A&&streamS" heading="section A" />
+                                    <ListItem href="/attendance/edit?grade=11&section=B&&streamS" heading="section B" />
+                                    <ListItem href="/attendance/edit?grade=11&section=C&&streamS" heading="section C" />
+                                    <ListItem href="/attendance/edit?grade=11&section=D&&streamS" heading="section D" />
                                 </List>
                             </AccordionItem>
                         </Accordion>
