@@ -1,100 +1,206 @@
 'use client'
-import * as React from "react";
-import styles from "../edit/page.module.css";
+
+import React, { useState, ChangeEvent, useRef } from "react";
 import Image from "next/image";
+import axios from "axios";
+import styles from "../edit/page.module.css";
+
 import CoreSearchbarAppbar from "@/widgets/UI/SearchbarAppbar";
-import useScreenSize from "@/hooks/useScreenSize";
 import CoreNormalAppbar from "@/widgets/UI/NormalAppbar";
 import CoreNavDrawer from "@/widgets/UI/NavDrawer";
 import CoreNavbar from "@/widgets/UI/Navbar";
 import { useNavDrawer } from "@/context/NavDrawerContext";
+import useScreenSize from "@/hooks/useScreenSize";
+
 import Container from "@/components/containers/Containers";
 import Form from "@/components/forms/Forms";
 import TextField from "@/components/inputs/fields/Fields";
-import ToggleInput from "@/components/inputs/toggle-inputs/Toggle-inputs";
-import Link from "@/components/links/Links";
 import Button from "@/components/buttons/Buttons";
+import Link from "@/components/links/Links";
+
+// Define a type for formData with index signature allowing string or File | null
+interface FormData {
+    [key: string]: string | File | null;
+}
+
+type ProfileFormProps = {
+    formData: FormData;
+    handleInputChange: (name: string, value: string | File | null) => void;
+};
+
+const fields: { icon: string; inputs: string[] }[] = [
+    { icon: "person", inputs: ["first_name", "last_name"] },
+    { icon: "mail", inputs: ["email", "username", "password"] },
+    { icon: "family_restroom", inputs: ["father_name", "mother_name"] },
+    { icon: "call", inputs: ["phone_number", "f_phone_number", "m_phone_number"] },
+    { icon: "other_admission", inputs: ["birthday", "gender"] },
+    { icon: "grade", inputs: ["grade", "stream", "section"] }
+];
+
+const labels: Record<string, string> = {
+    first_name: "First Name",
+    last_name: "Last Name",
+    email: "Email",
+    username: "Username",
+    password: "password",
+    father_name: "Father Name",
+    mother_name: "Mother Name",
+    phone_number: "Phone Number",
+    f_phone_number: "Father's Phone Number",
+    m_phone_number: "Mother's Phone Number",
+    birthday: "Birthday",
+    gender: "Gender",
+    grade: "Grade",
+    stream: "Stream",
+    section: "Section"
+};
+
+const ProfileForm: React.FC<ProfileFormProps> = ({ formData, handleInputChange }) => {
+    const [profileImage, setProfileImage] = useState("/images/profile-pic/default-avatar-icon.png");
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files[0]) {
+            const file = event.target.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            setProfileImage(imageUrl);
+            handleInputChange("profile_picture", file); // Store the file directly
+        }
+    };
+
+    const triggerFileInput = () => {
+        fileInputRef.current?.click();
+    };
+
+    return (
+        <div>
+            <div className={styles.profile_info}>
+                <div className={styles.profile_pic_container}>
+                    <Image
+                        src={profileImage}
+                        alt="Profile Picture"
+                        width={100}
+                        height={100}
+                        className={styles.profile_pic}
+                    />
+                    <div className={styles.ab_button_pp}>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            ref={fileInputRef}
+                            className={styles.image_input}
+                            onChange={handleImageChange}
+                            style={{ display: "none" }}
+                            name="image"
+                        />
+                        <Button variant="icon" icon="edit" type="button" onClick={triggerFileInput} />
+                    </div>
+                </div>
+            </div>
+
+            {fields.map(({ icon, inputs }) => (
+                <div className={styles.field} key={icon}>
+                    <span className={`material-symbols-outlined ${styles.field_icon}`}>{icon}</span>
+                    <div className={styles.field_cont}>
+                        {inputs.map((name) => (
+                            <TextField
+                                key={name}
+                                label={labels[name]}
+                                name={name}
+                                value={formData[name] as string} // Explicitly cast to string
+                                onChange={(value: string) => handleInputChange(name, value)}
+                                required
+                                type={name === "birthday" ? "date" : name === "grade" ? "number" : "text"}
+                            />
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export default function Add() {
-	const { isNavDrawerOpen, toggleNavDrawer } = useNavDrawer();
+    const { isNavDrawerOpen, toggleNavDrawer } = useNavDrawer();
+    const isLargeScreen: boolean = useScreenSize(1024);
 
-	const isLargeScreen: boolean = useScreenSize(1024);
+    // Define the formData type explicitly
+    const [formData, setFormData] = useState<FormData>({
+        first_name: "",
+        last_name: "",
+        email: "",
+        username: "",
+        password: "",
+        father_name: "",
+        mother_name: "",
+        phone_number: "",
+        f_phone_number: "",
+        m_phone_number: "",
+        birthday: "",
+        gender: "",
+        grade: "",
+        stream: "",
+        section: "",
+        profile_picture: null,
+    });
 
-	return (
-	  	<>
-			{isLargeScreen ? <CoreNormalAppbar navdrawerOpener={toggleNavDrawer} title="Add Student" /> : <CoreSearchbarAppbar title="Add Student" />}
-			{isLargeScreen ? <CoreNavDrawer isOpen={isNavDrawerOpen} active={2} /> : <CoreNavbar active={2} />}
+    const handleInputChange = (name: string, value: string | File | null) => {
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const formDataToSend = new FormData();
+        // Append all text fields
+        Object.keys(formData).forEach((key) => {
+            if (key !== "profile_picture") {
+                formDataToSend.append(key, formData[key] as string); // Only append strings
+            }
+        });
+
+        // Append the profile image if it exists
+        if (formData.profile_picture) {
+            formDataToSend.append("profile_picture", formData.profile_picture);
+        }
+
+        try {
+            console.log(formData)
+            const response = await axios.post("http://localhost:5000/student/register", formDataToSend, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            if (response.status === 200) {
+                console.log("Student added successfully");
+            } else {
+                console.error("Error adding student");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    };
+
+    return (
+        <>
+            {isLargeScreen ? <CoreNormalAppbar navdrawerOpener={toggleNavDrawer} title="Add Student" /> : <CoreSearchbarAppbar title="Add Student" />}
+            {isLargeScreen ? <CoreNavDrawer isOpen={isNavDrawerOpen} active={2} /> : <CoreNavbar active={2} />}
             <Container hasSearchbarAppbar navDrawerOpen={isNavDrawerOpen} icon="add" animateContextBar={false}>
-                <Form 
-                    // heading="Edit student profile"
+                <Form
                     className={styles.form}
-                    inputs={
-                        <>
-                            <div className={styles.profile_info}>
-                                <div className={styles.profile_pic_container}>
-                                    <Image src={"/images/profile-pic/default-avatar-icon.png"} alt="" width="100" height="100" className={styles.profile_pic} />
-                                    <div className={styles.ab_button_pp}>
-                                        <Button variant="icon" icon="edit" type="button"></Button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>person</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="First Name" name="first_name" required />
-                                    <TextField label="Last Name" name="last_name" required />
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>mail</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="Email" name="email" type="name" required />
-                                    <TextField label="Username" name="username" required />
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>family_restroom</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="Father Name" name="father_name" required />
-                                    <TextField label="Mother Name" name="mother_name" required />
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>call</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="Phone Number" name="phone_number" required />
-                                    <TextField label="Father's Phone Number" name="f_phone_number" required />
-                                    <TextField label="Mother's Phone Number" name="m_phone_number" required />
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>other_admission</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="Birthday" name="birthday" type="date" required />
-                                    <TextField label="Gender" name="gender" required />
-                                </div>
-                            </div>
-                            <div className={styles.field}>
-                                <span className={`material-symbols-outlined ${styles.field_icon}`}>grade</span>
-                                <div className={styles.field_cont}>
-                                    <TextField label="Grade" name="grade" type="number" required />
-                                    <TextField label="stream" name="stream" required />
-                                    <TextField label="section" name="section" required />
-                                </div>
-                            </div>
-                        </>
-                    }
-                    formLinks={
-                        <Link href="/help" padded>Need Help?</Link>
-                    }
+                    onSubmit={handleSubmit}
+                    inputs={<ProfileForm formData={formData} handleInputChange={handleInputChange} />}
+                    formLinks={<Link href="/help" padded>Need Help?</Link>}
                     formAction={
                         <>
-                            <Button variant="outlined" type="button" href="/students">Cancle</Button>
+                            <Button variant="outlined" type="button" href="/students">Cancel</Button>
                             <Button variant="filled" type="submit">Add</Button>
                         </>
                     }
                 />
             </Container>
-		</>
-	);
+        </>
+    );
 }
