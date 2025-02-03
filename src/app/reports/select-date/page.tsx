@@ -36,7 +36,7 @@ export default function SelectDate() {
                                 listNum={list.id} 
                                 heading={list.date} 
                                 supportingText={list.dateName ? list.dateName : ""} 
-                                href={`/reports?date=${list.date}`}
+                                href={`/reports/portal?date=${list.date}`}
                             />
                         ))}
                     </List>

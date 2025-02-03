@@ -56,3 +56,26 @@
     }
 
 }
+
+.error_container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    /* margin-top: 10rem; */
+    height: 70svh;
+}
+
+.error_details {
+    text-align: center;
+}
+
+.error_details :first-child {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.error_details :last-child {
+    font-size: smaller;
+}

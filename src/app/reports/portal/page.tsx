@@ -11,16 +11,17 @@ import CoreNavbar from "@/widgets/UI/Navbar";
 import { useNavDrawer } from "@/context/NavDrawerContext";
 import Container from "@/components/containers/Containers";
 import List, { ListItem } from "@/components/lists/Lists";
+import { useSearchParams } from "next/navigation";
 
 const statuses = ["present", "absent", "permission", "late"];
 const grades = [
-    { grade: "Grade 9", sections: ["section A", "section B", "section C", "section D"] },
-    { grade: "Grade 10", sections: ["section A", "section B", "section C", "section D"] },
+    { grade: "9", sections: ["A", "B", "C", "D"] },
+    { grade: "10", sections: ["A", "B", "C", "D"] },
     {
-        grade: "Grade 11",
+        grade: "11",
         sections: [
-            { label: "Natural Science", sections: ["section A", "section B", "section C", "section D"] },
-            { label: "Social Science", sections: ["section A", "section B", "section C", "section D"] },
+            { label: "N", sections: ["A", "B", "C", "D"] },
+            { label: "S", sections: ["A", "B", "C", "D"] },
         ],
         isNested: true,
     }
@@ -28,6 +29,9 @@ const grades = [
 
 export default function ReportsPortal() {
 	const { isNavDrawerOpen, toggleNavDrawer } = useNavDrawer();
+    
+    const searchParams = useSearchParams();
+    const date = searchParams.get('date');
 
 	const isLargeScreen: boolean = useScreenSize(1024);
 
@@ -40,14 +44,14 @@ export default function ReportsPortal() {
                     {statuses.map((status) => (
                         <Accordion key={status} variant="filled" title={status.charAt(0).toUpperCase() + status.slice(1)}>
                             {grades.map((grade, gradeIndex) => (
-                                <AccordionItem key={grade.grade} label={grade.grade}>
+                                <AccordionItem key={grade.grade} label={`Grade ${grade.grade}`}>
                                     {grade.isNested ? (
                                         <Accordion variant="filled">
                                             {grade.sections.map((nestedGrade: any) => (
-                                                <AccordionItem key={nestedGrade.label} label={nestedGrade.label}>
+                                                <AccordionItem key={nestedGrade.label} label={nestedGrade.label == "N" ? "Natural Science" : "Scoial Sceince"}>
                                                     <List>
                                                         {nestedGrade.sections.map((section: string) => (
-                                                            <ListItem key={section} href={`/reports?show=${status}&grade=${grade.grade}&stream=${nestedGrade.label.toLowerCase()}&section=${section}`} heading={section} />
+                                                            <ListItem key={section} href={`/reports?status=${status}&grade=${grade.grade}&stream=${nestedGrade.label}&section=${section}&date=${date ? date : "today"}`} heading={`Section ${section}`} />
                                                         ))}
                                                     </List>
                                                 </AccordionItem>
@@ -56,7 +60,7 @@ export default function ReportsPortal() {
                                     ) : (
                                         <List>
                                             {(grade.sections as string[]).map((section, index) => (
-                                                <ListItem key={section} href={`/reports?show=${status}&grade=${grade.grade}&section=${section}`} heading={section} />
+                                                <ListItem key={section} href={`/reports?status=${status}&grade=${grade.grade}&section=${section}&date=${date ? date : "today"}`} heading={`Section ${section}`} />
                                             ))}
                                         </List>
                                     )}

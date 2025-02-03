@@ -1,4 +1,4 @@
-import Jimp from 'jimp';
+import { Jimp } from 'jimp';
 import { readFileSync } from 'fs';
 import { IncomingForm } from 'formidable';
 import QR  from '../models/qr.js';

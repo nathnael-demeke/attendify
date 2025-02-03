@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "format": "prettier --write .",
-        "format-check": "prettier --check ."
+        "format-check": "prettier --check .",
+        "start": "node app.js"
     },
     "license": "MIT",
     "devDependencies": {
@@ -14,8 +15,15 @@
     "dependencies": {
         "@zxing/library": "^0.21.3",
         "backend": "file:",
+        "cors": "^2.8.5",
         "dotenv": "^16.4.5",
+        "express": "^4.21.2",
+        "formidable": "^3.5.2",
+        "jimp": "^1.6.0",
         "jsqr": "^1.4.0",
+        "mongoose": "^8.9.0",
+        "mysql2": "^3.11.5",
+        "qrcode-reader": "^1.0.4",
         "zxing": "^0.1.2"
     }
 }
