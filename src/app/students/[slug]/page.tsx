@@ -36,7 +36,8 @@ interface studentData {
 	birthday: string,
 	gender: string,
 	mother_name: string,
-	father_name: string
+	father_name: string,
+	email: string
 }
 
 export default function StudentProfile() {
@@ -77,18 +78,22 @@ export default function StudentProfile() {
 		birthday: "Loading",
 		gender: "Loading",
 		mother_name: "Loading",
-		father_name: "Loading"
+		father_name: "Loading",
+		email: "Loading"
 	});
+	
 	useEffect(() => {
         const fetchStudentData = async () => {
             try {
-                const response = await axios.get(`https://localhost:5000/student/`, {
+                const response = await axios.get(`http://localhost:5000/student/getInfo`, {
                     params: {
-                        id: isIdPattern ? user.id : undefined,
+                        studentID: isIdPattern ? user.id : undefined,
                         username: isIdPattern ? undefined : user.name,
+						schoolID: 1
                     },
                 });
 				setData(response.data);
+				console.log(response.data)
                 console.log("Student Data:", response.data);
             } catch (error) {
                 console.error("Error fetching student data:", error);
@@ -168,7 +173,7 @@ export default function StudentProfile() {
 						<List>
 							<ListItem icon="today" heading="Absent" onClick={() => setReportFalseDialog(true)} supportingText="Today" />
                             <ListItem icon="call" heading={data.phone_number} supportingText="Phone Number" href={`tel:${data.phone_number}`} />
-                            <ListItem icon="mail" heading="student@mailservice.com" supportingText="Email" href="mailto:student@mailservice.com" />
+                            <ListItem icon="mail" heading={data.email} supportingText="Email" href={`mailto:${data.email}`} />
                             <ListItem icon="celebration" heading={data.birthday} supportingText="Birthday" />
                             <ListItem icon="family_restroom" heading={data.father_name} supportingText="Father name" />
                             <ListItem icon="family_restroom" heading={data.mother_name} supportingText="Mother Name" />

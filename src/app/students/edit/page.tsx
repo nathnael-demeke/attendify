@@ -1,7 +1,7 @@
 'use client'
-import * as React from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
+import { useEffect, useState } from "react";
 import CoreSearchbarAppbar from "@/widgets/UI/SearchbarAppbar";
 import useScreenSize from "@/hooks/useScreenSize";
 import CoreNormalAppbar from "@/widgets/UI/NormalAppbar";
@@ -15,16 +15,58 @@ import ToggleInput from "@/components/inputs/toggle-inputs/Toggle-inputs";
 import Link from "@/components/links/Links";
 import Button from "@/components/buttons/Buttons";
 import Dialog from "@/components/dialogs/Dialogs";
+import axios from "axios";
+
+
+interface studentData {
+	first_name: string,
+	last_name: string,
+	phone_number: string,
+	username: string,
+	id: number | "unknown",
+	section: string,
+	grade: string,
+	qrcode_path: string,
+	photo: string,
+	birthday: string,
+	gender: string,
+	mother_name: string,
+	father_name: string,
+	email: string,
+    father_phone_number: string,
+    mother_phone_number: string
+}
 
 export default function Edit() {
 	const { isNavDrawerOpen, toggleNavDrawer } = useNavDrawer();
-    const [ isDialogOpen, setDialogOpen ] = React.useState(false);
+    const [ isDialogOpen, setDialogOpen ] = useState(false);
 
 	const handleDialogOpen = () => {
 		setDialogOpen(true)
 	}
 
 	const isLargeScreen: boolean = useScreenSize(1024);
+
+    const [ data, setData ] = useState<studentData>();
+
+    useEffect(() => {
+        const fetchStudentData = async () => {
+            try {
+                const response = await axios.get(`http://localhost:5000/student/getInfo`, {
+                    params: {
+                        studentID:7 ,
+						schoolID: 1
+                    },
+                });
+				setData(response.data);
+				console.log(response.data)
+            } catch (error) {
+                console.error("Error fetching student data:", error);
+            }
+        };
+
+        fetchStudentData();
+    }, []);
 
 	return (
 	  	<>
@@ -61,45 +103,43 @@ export default function Edit() {
                             <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>person</span>
                                 <div className={styles.field_cont}>
-                                    <TextField label="First Name" name="first_name" required />
-                                    <TextField label="Last Name" name="last_name" required />
+                                    <TextField label="First Name" name="first_name" value={data ? data.first_name : ""} required />
+                                    <TextField label="Last Name" name="last_name" value={data ? data.last_name : ""} required />
                                 </div>
                             </div>
                             <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>mail</span>
                                 <div className={styles.field_cont}>
-                                    <TextField label="Email" name="email" type="name" required />
-                                    <TextField label="Username" name="username" required />
+                                    <TextField label="Email" name="email" type="name" value={data ? data.email : ""} required />
+                                    {/* <TextField label="Username" name="username" required /> */}
                                 </div>
-                            </div>
+                            </div> 
                             <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>family_restroom</span>
                                 <div className={styles.field_cont}>
-                                    <TextField label="Father Name" name="father_name" required />
-                                    <TextField label="Mother Name" name="mother_name" required />
+                                    <TextField label="Father Name" name="father_name" value={data ? data.father_name : ""} required />
+                                    <TextField label="Mother Name" name="mother_name" value={data ? data.mother_name : ""} required />
                                 </div>
                             </div>
                             <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>call</span>
                                 <div className={styles.field_cont}>
-                                    <TextField label="Phone Number" name="phone_number" required />
-                                    <TextField label="Father's Phone Number" name="f_phone_number" required />
-                                    <TextField label="Mother's Phone Number" name="m_phone_number" required />
+                                    <TextField label="Phone Number" name="phone_number" value={data ? data.phone_number : ""} required />
+                                    <TextField label="Father's Phone Number" name="f_phone_number" value={data ? data.father_phone_number : ""} required />
+                                    <TextField label="Mother's Phone Number" name="m_phone_number" value={data ? data.mother_phone_number : ""} required />
                                 </div>
                             </div>
-                            <div className={styles.field}>
+                            {/* <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>other_admission</span>
                                 <div className={styles.field_cont}>
                                     <TextField label="Birthday" name="birthday" type="date" required />
-                                    <TextField label="Gender" name="gender" required />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className={styles.field}>
                                 <span className={`material-symbols-outlined ${styles.field_icon}`}>grade</span>
                                 <div className={styles.field_cont}>
-                                    <TextField label="Grade" name="grade" type="number" required />
-                                    <TextField label="stream" name="stream" required />
-                                    <TextField label="section" name="section" required />
+                                    <TextField label="Grade" name="grade" type="number" value={data ? data.grade : ""} required />
+                                    <TextField label="section" name="section" value={data ? data.section : ""} required />
                                 </div>
                             </div>
                         </>
@@ -111,7 +151,7 @@ export default function Edit() {
                         <>
                             {!isLargeScreen ?
                                 <Button variant="outlined" onClick={handleDialogOpen}>Delete</Button> :
-                                <Button variant="outlined" type="button" href="/students/profile?uid=#1012">Cancle</Button>
+                                <Button variant="outlined" type="button" href="/students/">Cancle</Button>
                             }
                             <Button variant="filled" type="submit">Save</Button>
                         </>
