@@ -25,7 +25,7 @@ interface NoAttendanceResponse {
 export function format(
     data: Record<string, DataItem[]> | NoAttendanceResponse, 
     status: string, 
-    grade?: string, 
+    grade?: number, 
     stream?: string, 
     section?: string
 ): DataType[] | NoAttendanceResponse {
@@ -42,7 +42,7 @@ export function format(
     // Filter data and transform into DataType format
     const filteredData = data[status]
         .filter(item => (
-            (!grade || item.grade.toString() === grade) &&
+            (!grade || item.grade === grade) &&
             (!section || extractSection(item.section) === section) &&
             (!stream || extractStream(item.section) === stream)
         ))
