@@ -23,6 +23,7 @@
     color: var(--text-400);
     transition: all 0.2s ease;
     pointer-events: none;
+    width: fit-content !important;
 }
 
 .input {
