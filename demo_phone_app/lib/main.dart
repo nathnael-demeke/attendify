@@ -2,6 +2,8 @@ import "dart:convert";
 import "dart:io";
 import "package:camera/camera.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
+import "package:sphone/screens/StudentsSearchPage.dart";
 import "package:sphone/screens/attendance.dart";
 import "package:http/http.dart" as http;
 
@@ -9,10 +11,35 @@ late List<CameraDescription> cameras;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: Demo(),
+    home: Scaffold(
+      backgroundColor: Colors.black,
+      drawer: SideBar(),
+      body: Demo(),
+    ),
   ));
+}
+
+class SideBar extends StatelessWidget {
+  const SideBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const Text("Umer Sibhatu Branch"),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (build) {
+              return const StudentsSearchPage();
+            }));
+          },
+          child: const Icon(Icons.people),
+        )
+      ],
+    );
+  }
 }
 
 class Demo extends StatefulWidget {
@@ -47,6 +74,7 @@ class _DemoState extends State<Demo> {
     double windowWidth = MediaQuery.of(context).size.width;
     double windowHeight = MediaQuery.of(context).size.height;
     _cameraController.setFlashMode(FlashMode.off);
+    _cameraController.lockCaptureOrientation(DeviceOrientation.landscapeRight);
     return Stack(
       children: [
         Positioned(
