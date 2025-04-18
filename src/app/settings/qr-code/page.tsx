@@ -37,8 +37,8 @@ export default function QRCodeSettings() {
 					<ListItem icon="qr_code" heading="QR Code in a paper" supportingText={selectedQRCodeOption} onClick={() => setQRCodeDialog(true)} />
 				</List>
 				<List>
-					<ListItemToggle checked={isManualAttendanceChecked} onChange={(checked) => setManualAttendance(checked)} id="manual-attendance" icon="auto_transmission" heading="Manual Attendance Entry" supportingText="Manual attendance entry if QR code scanning fails." />
-					<ListItemToggle checked={isContinuousScanningChecked} onChange={(checked) => setContinuousScanning(checked)} id="continuous-scanning" icon="resume" heading="Continuous Scanning" supportingText="Scan without restarting the scanner for each student." />
+					<ListItemToggle checked={isManualAttendanceChecked} onChange={() => setManualAttendance(!isManualAttendanceChecked)} id="manual-attendance" icon="auto_transmission" heading="Manual Attendance Entry" supportingText="Manual attendance entry if QR code scanning fails." />
+					<ListItemToggle checked={isContinuousScanningChecked} onChange={() => setContinuousScanning(!isContinuousScanningChecked)} id="continuous-scanning" icon="resume" heading="Continuous Scanning" supportingText="Scan without restarting the scanner for each student." />
 				</List>
                 <List heading="Looking for something?" sectionClassName={styles.ql_list} >
 					<Link padded href="/settings/account">Account Settings</Link>
