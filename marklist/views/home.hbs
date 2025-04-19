@@ -1,0 +1,46 @@
+{{#if (eq login_type 0)}}
+  <div class="row">
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="info-box">
+        <span class="info-box-icon bg-info elevation-1"><i class="fas fa-users"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Total Students</span>
+          <span class="info-box-number">
+            {{counts.students}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="info-box">
+        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-th-list"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Total Classes</span>
+          <span class="info-box-number">
+            {{counts.classes}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-6 col-md-4">
+      <div class="info-box">
+        <span class="info-box-icon bg-primary elevation-1"><i class="fas fa-book"></i></span>
+        <div class="info-box-content">
+          <span class="info-box-text">Total Subject</span>
+          <span class="info-box-number">
+            {{counts.subjects}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{{else}}
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        Welcome {{name}}!
+      </div>
+    </div>
+  </div>
+{{/if}}

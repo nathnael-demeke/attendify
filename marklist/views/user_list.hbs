@@ -1,0 +1,39 @@
+<div class="col-lg-12">
+    <div class="card card-outline card-success">
+        <div class="card-body">
+            <table class="table tabe-hover table-bordered" id="list">
+                <thead>
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Name</th>
+                        <th>Contact #</th>
+                        <th>Role</th>
+                        <th>Email</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each users}}
+                    <tr>
+                        <th class="text-center">{{@index}}</th>
+                        <td><b>{{ucwords this.name}}</b></td>
+                        <td><b>{{this.contact}}</b></td>
+                        <td><b>{{lookup ../type this.type}}</b></td>
+                        <td><b>{{this.email}}</b></td>
+                        <td class="text-center">
+                            <div class="btn-group">
+                                <a href="javascript:void(0)" data-id='{{this.id}}' class="btn btn-primary btn-flat manage_user">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" class="btn btn-danger btn-flat delete_user" data-id="{{this.id}}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

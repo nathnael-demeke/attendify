@@ -1,0 +1,44 @@
+<div class="col-lg-12">
+  <div class="card card-outline card-primary">
+    <div class="card-header">
+      <div class="card-tools">
+        <a class="btn btn-block btn-sm btn-default btn-flat border-primary new_class" href="/classes/new">
+          <i class="fa fa-plus"></i> Add New
+        </a>
+      </div>
+    </div>
+    <div class="card-body">
+      <table class="table table-hover table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center">#</th>
+            <th>Level</th>
+            <th>Section</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each classes}}
+          <tr>
+            <th class="text-center">{{@index}}</th>
+            <td><b>{{this.level}}</b></td>
+            <td><b>{{this.section}}</b></td>
+            <td class="text-center">
+              <div class="btn-group">
+                <a href="/classes/edit/{{this.id}}" class="btn btn-primary btn-flat">
+                  <i class="fas fa-edit"></i>
+                </a>
+                <form action="/classes/delete/{{this.id}}" method="POST">
+                  <button type="submit" class="btn btn-danger btn-flat">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<nav class="main-header navbar navbar-expand navbar-primary navbar-dark">
+  <ul class="navbar-nav">
+    {{#if user}}
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button">
+        <i class="fas fa-bars"></i>
+      </a>
+    </li>
+    {{/if}}
+    <li class="nav-item">
+      <a class="nav-link text-white" href="/" role="button">
+        <large><b>{{system.name}}</b></large>
+      </a>
+    </li>
+  </ul>
+
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+        <i class="fas fa-expand-arrows-alt"></i>
+      </a>
+    </li>
+    {{#if student}}
+    <li class="nav-item">
+      <a class="nav-link" href="/auth/logout">
+        <i class="fas fa-user"></i>
+        {{capitalize student.name}}
+        <i class="fa fa-sign-out-alt"></i>
+      </a>
+    </li>
+    {{/if}}
+  </ul>
+</nav>

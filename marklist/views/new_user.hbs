@@ -1,0 +1,27 @@
+<div class="col-lg-12">
+  <form id="manage_user" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{id}}">
+    <div class="row">
+      <div class="col-md-6 border-right">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" name="firstname" class="form-control" 
+                 value="{{#if firstname}}{{firstname}}{{/if}}" required>
+        </div>
+        {{!-- Other form fields --}}
+      </div>
+      <div class="col-md-6">
+        {{#if (eq login_type 1)}}
+        <div class="form-group">
+          <select name="type" class="custom-select">
+            <option value="2" {{#eq type 2}}selected{{/eq}}>Registrar</option>
+            <option value="1" {{#eq type 1}}selected{{/eq}}>Admin</option>
+          </select>
+        </div>
+        {{/if}}
+        {{!-- Avatar upload --}}
+        <img src="{{#if avatar}}/uploads/{{avatar}}{{/if}}" id="cimg">
+      </div>
+    </div>
+  </form>
+</div>

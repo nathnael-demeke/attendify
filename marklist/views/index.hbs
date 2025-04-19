@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{!-- {{> header}} --}}
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<div class="wrapper">
+  {{> topbar}}
+  {{> sidebar}}
+
+  <div class="content-wrapper">
+    <div class="toast" id="alert_toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body text-white"></div>
+    </div>
+    <div id="toastsContainerTopRight" class="toasts-top-right fixed"></div>
+
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">{{title}}</h1>
+          </div>
+        </div>
+        <hr class="border-primary">
+      </div>
+    </div>
+
+    <section class="content">
+      <div class="container-fluid">
+        {{{body}}}
+      </div>
+    </section>
+
+    {{!-- {{> modals}} --}}
+  </div>
+
+  <footer class="main-footer">
+    <strong>Design by Alazar Gizachew <a href="https://www.instagram.com/salaza_4?igsh=MTR3aTdheHIzOW9zMw==">Link</a>.</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>{{system.name}}</b>
+    </div>
+  </footer>
+</div>
+
+{{!-- {{> footer}} --}}
+</body>
+</html>
