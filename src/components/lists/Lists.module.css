@@ -90,24 +90,27 @@
 
 .tli_check_icon {
     border-radius: 10rem;
-    height: 1.3rem;
-    width: 2.4rem;
+    height: 1rem;
+    width: 2.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 2.6rem;
-
+    color: var(--accent-600);
 }
 
 .tli_checked {
-    background-color: var(--link-500);
+    background-color: var(--primary-200);
 }
 
 .disabled {
-    background-color:  var(--text-600) !important;
+    background-color:  var(--primary-200) !important;
+    color: var(--text-700);
+    cursor: default !important;
 }
 
 .disabled .tli_checked {
     background-color: var(--accent-900);
-    color: var(--accent-500);
+    color: var(--accent-200);
 }
+

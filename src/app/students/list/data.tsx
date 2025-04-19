@@ -2,112 +2,38 @@ interface DataType {
     id: number;
     fullname: string;
     grade: string;
-    uid: `#${string}`;
+    section: string;
+    uid: `#${number}`;
+    stream?: "N" | "S"
+    status: "present" | "absent" | "late" | "permission"
 }
 
-export const absentData: Array<DataType> = [
-    { 
-        id: 1, 
-        fullname: "John Doe", 
-        grade: "10 A",
-        uid: "#1" //which school id
-    },
-    { 
-        id: 2, 
-        fullname: "Jane Smith", 
-        grade: "10 B", 
-        uid: "#1" 
-    },
-];
-
-export const presentData: Array<DataType> = [
-    {
-        id: 1, 
-        fullname: "John Doe", 
-        grade: "10 A",
-        uid: "#1" //which school id
-    },
-    { 
-        id: 2, 
-        fullname: "Jane Smith", 
-        grade: "10 B", 
-        uid: "#1" 
-    },
-];
-
-export const data2 = {
-    "absent": [
-        {
-            "id": 2,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Alazar",
-            "father_name": "Belayhun",
-            "birthday": "2008-03-28T21:00:00.000Z",
-            "grade": 11,
-            "section": "DN"
-        },
-        {
-            "id": 9,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Yonathan",
-            "father_name": "Mengistu",
-            "birthday": "2007-06-18T21:00:00.000Z",
-            "grade": 11,
-            "section": "DN"
-        },
-                {
-            "id": 21,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Makbel",
-            "father_name": "Sileshi",
-            "birthday": "2008-06-09T21:00:00.000Z",
-            "grade": 9,
-            "section": "O"
-        }
-    ],
-    "Present": [
-        {
-            "id": 1,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Nathnael",
-            "father_name": "Demeke",
-            "birthday": "2007-03-27T21:00:00.000Z",
-            "grade": 12,
-            "section": "HN"
-        },
-        {
-            "id": 1,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Nathnael",
-            "father_name": "Demeke",
-            "birthday": "2007-03-27T21:00:00.000Z",
-            "grade": 12,
-            "section": "HN"
-        },
-        {
-            "id": 1,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Nathnael",
-            "father_name": "Demeke",
-            "birthday": "2007-03-27T21:00:00.000Z",
-            "grade": 12,
-            "section": "HN"
-        },
-        {
-            "id": 1,
-            "name": "Safari Oumer Sibhatu Branch",
-            "school_id": 1,
-            "first_name": "Nathnael",
-            "father_name": "Demeke",
-            "birthday": "2007-03-27T21:00:00.000Z",
-            "grade": 12,
-            "section": "HN"
-        }
-    ]
-}
+export const data: DataType[] = [
+    { id: 1, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 2, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 3, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 4, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 5, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 6, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 7, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 8, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 9, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 10, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 11, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 12, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 13, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 14, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 15, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 16, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 17, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 18, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 19, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 20, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 21, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 22, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 23, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 24, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 25, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 26, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+    { id: 27, fullname: "Ermiyas Arage", grade: "12", section: "C", uid: "#111", stream: "N", status: "present" },
+]

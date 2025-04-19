@@ -15,6 +15,7 @@ import useScreenSize from "@/hooks/useScreenSize";
 import Container from "@/components/containers/Containers";
 import Form from "@/components/forms/Forms";
 import TextField from "@/components/inputs/fields/Fields";
+import ToggleInput from "@/components/inputs/toggle-inputs/Toggle-inputs";
 import Button from "@/components/buttons/Buttons";
 import Link from "@/components/links/Links";
 
@@ -33,8 +34,8 @@ const fields: { icon: string; inputs: string[] }[] = [
     { icon: "mail", inputs: ["email", "username", "password"] },
     { icon: "family_restroom", inputs: ["father_name", "mother_name"] },
     { icon: "call", inputs: ["phone_number", "f_phone_number", "m_phone_number"] },
-    { icon: "other_admission", inputs: ["birthday", "gender"] },
-    { icon: "grade", inputs: ["grade", "stream", "section"] }
+    { icon: "other_admission", inputs: ["birthday"] },
+    { icon: "grade", inputs: ["grade", "section"] }
 ];
 
 const labels: Record<string, string> = {
@@ -72,6 +73,14 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ formData, handleInputChange }
         fileInputRef.current?.click();
     };
 
+    const handleGenderChange = (selectedGender: "m" | "f") => {
+        handleInputChange("gender", selectedGender);
+    };
+
+    const handleStreamChange = (selectedStream: "n" | "s" | null) => {
+        handleInputChange("stream", selectedStream);
+    };
+
     return (
         <div>
             <div className={styles.profile_info}>
@@ -92,6 +101,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ formData, handleInputChange }
                             onChange={handleImageChange}
                             style={{ display: "none" }}
                             name="image"
+                            required
                         />
                         <Button variant="icon" icon="edit" type="button" onClick={triggerFileInput} />
                     </div>
@@ -110,12 +120,33 @@ const ProfileForm: React.FC<ProfileFormProps> = ({ formData, handleInputChange }
                                 value={formData[name] as string} // Explicitly cast to string
                                 onChange={(value: string) => handleInputChange(name, value)}
                                 required
-                                type={name === "birthday" ? "date" : name === "grade" ? "number" : "text"}
+                                type={
+                                    name === "birthday" ? "date" 
+                                    : name === "grade" ? "number" 
+                                    : name === "password" ? "password" 
+                                    : "text"
+                                }
+                                
                             />
                         ))}
                     </div>
                 </div>
             ))}
+            <div className={styles.toggle}>
+                <span className={`material-symbols-outlined ${styles.field_icon}`}>wc</span>
+                <>
+                    <ToggleInput type="radio" name="gender" checked={formData.gender === "m"} onChange={() => handleGenderChange("m")} label="Male" />
+                    <ToggleInput type="radio" name="gender" checked={formData.gender === "f"} onChange={() => handleGenderChange("f")} label="Female" />
+                </>
+            </div>
+            <div className={styles.toggle}>
+                <span className={`material-symbols-outlined ${styles.field_icon}`}>experiment</span>
+                <>
+                    <ToggleInput type="radio" name="stream" checked={formData.stream === "n"} onChange={() => handleStreamChange("n")} label="Natural Science" />
+                    <ToggleInput type="radio" name="stream" checked={formData.stream === "s"} onChange={() => handleStreamChange("s")} label="Social Science" />
+                    <ToggleInput type="radio" name="stream" checked={formData.stream === "none"} onChange={() => handleStreamChange(null)} label="None" />
+                </>
+            </div>
         </div>
     );
 };

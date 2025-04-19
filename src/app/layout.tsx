@@ -26,7 +26,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         if (typeof window !== "undefined") {
             return localStorage.getItem('font-size') || 'small';
         }
-        return 'small';
+        return 'medium';
     });
 
     const [isTouchDevice, setTouchDevice] = React.useState(() => {

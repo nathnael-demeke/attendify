@@ -28,8 +28,8 @@ export default function SearchFiltersSettings() {
 			{isLargeScreen && <CoreNavDrawer isOpen={isNavDrawerOpen} active={1} /> }
 			<Container hasSearchbarAppbar hasNavbar={false} navDrawerOpen={isNavDrawerOpen}>
 				<List>
-					<ListItemToggle checked={isSaveHistoryChecked} onChange={(checked) => setSaveHistory(checked)} icon="bookmark" id="profile-edited" heading="Save Search Queries" />
-					<ListItemToggle checked={isAutoSuggestionsChecked} onChange={(checked) => setAutoSuggestions(checked)} icon="prompt_suggestion" id="student-edited" heading="Auto-Suggestions" />
+					<ListItemToggle checked={isSaveHistoryChecked} onChange={() => setSaveHistory(!isSaveHistoryChecked)} icon="bookmark" id="profile-edited" heading="Save Search Queries" />
+					<ListItemToggle checked={isAutoSuggestionsChecked} onChange={() => setAutoSuggestions(!isAutoSuggestionsChecked)} icon="prompt_suggestion" id="student-edited" heading="Auto-Suggestions" />
 				</List>
 				<List>
 					<ListItem heading="View Search History" href="/settings/search/history" supportingText=" view recent searches." icon="manage_search" />

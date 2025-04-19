@@ -26,7 +26,7 @@
 }
 
 .toggle_input:hover .checkbox_cont:not(.checked) {
-    background-color: var(--secondary-200);
+    background-color: var(--secondary-100);
 }
 
 .custom_input {
@@ -82,7 +82,7 @@
 }
   
 .primary {
-    --checkbox-border-checked: var(--link-000);
+    --checkbox-border-checked: var(--link-100);
     --checkbox-bg-checked: var(--link-000);
 }
   
